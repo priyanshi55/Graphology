@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Website Title -->
+    <title>Graphology Application</title>
+    <style>
+
+      .alert {
+        padding: 12px;
+        border-radius: 4px;
+        background-color: #f44336;
+        color: white;
+        opacity: 0.5;
+        transition: opacity 0.6s;
+        margin-bottom: 12px;
+        -webkit-box-shadow: -5px 5px 9px 0px rgba(142, 76, 50, 0.75);
+        -moz-box-shadow:    -5px 5px 9px 0px rgba(142, 76, 50, 0.75);
+        box-shadow:         -5px 5px 9px 0px rgba(142, 76, 50, 0.75);
+      }
+
+      .alert.success {background-color: #4CAF50;
+          -webkit-box-shadow: -5px 5px 9px 0px rgba(37, 135, 50, 0.75);
+      -moz-box-shadow:    -5px 5px 9px 0px rgba(37, 135, 50, 0.75);
+      box-shadow:         -5px 5px 9px 0px rgba(37, 135, 50, 0.75);}
+      .alert.info {background-color: #2196F3;}
+      .alert.warning {background-color: #ff9800;}
+
+      .closebtn {
+        margin-left: 15px;
+        color: white;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .closebtn:hover {
+        color: black;
+      }
+
+      @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
+
+    </style>
+    
+    <!-- Styles -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:500,700&display=swap&subset=latin-ext" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600&display=swap&subset=latin-ext" rel="stylesheet">
+
+    <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,300,300italic,400italic,600,700,600italic,200,200italic' rel='stylesheet' type='text/css'>    
+    <link href='http://fonts.googleapis.com/css?family=Play:400,700' rel='stylesheet' type='text/css'>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400&display=swap" rel="stylesheet">
+
+    <link rel='stylesheet' href="{{ url_for('static', filename='css/bootstrap.css')}}">
+    <link rel='stylesheet' href="{{ url_for('static', filename='css/fontawesome-all.css')}}">
+    <link rel='stylesheet' href="{{ url_for('static', filename='css/swiper.css')}}">
+    <link rel='stylesheet' href="{{ url_for('static', filename='css/magnific-popup.css')}}">
+    <link rel='stylesheet' href="{{ url_for('static', filename='css/styles.css')}}">
+
+
+    <!-- <link rel='stylesheet' href="static/css/bootstrap.css">
+    <link rel='stylesheet' href="static/css/fontawesome-all.css">
+    <link rel='stylesheet' href="static/css/swiper.css">
+    <link rel='stylesheet' href="static/css/magnific-popup.css">
+    <link rel='stylesheet' href="static/css/styles.css"> -->
+    
+    <!-- Favicon  -->
+    <link rel="icon" href="{{ url_for('static', filename='images/logo.png')}}">
+    <!-- <link rel="icon" href="static/images/logo.png"> -->
+
+</head>
+
+<body>
+    
+    <!-- Preloader -->
+    <div class="spinner-wrapper">
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    </div>
+    <!-- end of preloader -->
+ 
+    <!-- Header -->
+    <header id="header" class="header">
+        <div class="header-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="text-container">
+                            <h1>GRAPHOLOGY <span style="color:#3495eb">APPLICATION</span></h1>
+                            <p class="p-heading p-large">
+                                Personality Detection using Handwriting
+                                <form method="POST" action="" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <input name="file" type="file" class="form-control-file" id="exampleFormControlFile1">
+                                    </div>
+                                    <!-- <a class="btn-solid-lg page-scroll" href="#final">SUBMIT</a> -->
+                                    <p><input class="btn-solid-lg page-scroll" type="submit" value="Submit"></p>
+                                </form>
+                                <div>
+                                    {% if error_msg != '' %}
+					    <div class="alert">
+						<span class="closebtn">&times;</span>
+						{{ error_msg }}
+					    </div> 
+                                    {% endif %}
+                                </div>                              
+                            </p>
+                        </div>
+                    </div> <!-- end of col -->
+                </div> <!-- end of row -->
+            </div> <!-- end of container -->
+	    
+            <div class="chosen_image">
+              <img src="{{image}}">
+            </div>
+	    
+        </div> <!-- end of header-content -->
+    </header> <!-- end of header -->
+    <!-- end of header -->
+ 
+    <header id="final" class="header3">
+      <div class="container">
+
+        {% for key,value in result.items() %}
+
+            {% if key == "Baseline Angle" %}
+              <h1 class="traits" style="padding-top: 25px;">Handwriting Features &#x270D;</h1> 
+            {% endif %}
+
+            {% if key == "Emotional Stability" %}
+              <h1 class="traits">Personality Traits &#x1F60E;</h1>
+            {% endif %}
+
+            {% if key == "Social Isolation" %}
+              <div class="output" style="padding-bottom: 20px;">{{key}}:{% if value == "No" %} &#10060; {% else %} &#10004;&#65039; {% endif %}</div>
+
+            {% elif key == "Baseline Angle" %}
+              <div class="output" style="padding-bottom: 20px;">{{key}}: {{value}}</div>
+            
+            {% elif key == "Top Margin" %}
+              <div class="output" style="padding-bottom: 20px;">{{key}}: {{value}}</div>
+            
+            {% elif key == "Letter Size" %}
+              <div class="output" style="padding-bottom: 20px;">{{key}}: {{value}}</div>
+            
+            {% elif key == "Line Spacing" %}
+              <div class="output" style="padding-bottom: 20px;">{{key}}: {{value}}</div>
+            
+            {% elif key == "Word Spacing" %}
+              <div class="output" style="padding-bottom: 20px;">{{key}}: {{value}}</div>
+
+            {% elif key == "Pen Pressure" %}
+              <div class="output" style="padding-bottom: 20px;">{{key}}: {{value}}</div>
+            
+            {% elif key == "Slant" %}
+              <div class="output" style="padding-bottom: 20px;">{{key}}: {{value}}</div>
+            
+            {% elif key == "Emotional Stability" %}
+              <div class="output" style="padding-bottom: 20px;">{{key}}:{% if value == "No" %} &#10060; {% else %} &#10004;&#65039; {% endif %}</div>
+
+            {% elif key == "Mental Energy or Will Power" %}
+              <div class="output" style="padding-bottom: 20px;">{{key}}:{% if value == "No" %} &#10060; {% else %} &#10004;&#65039; {% endif %}</div>
+
+            {% elif key == "Modesty" %}
+              <div class="output" style="padding-bottom: 20px;">{{key}}:{% if value == "No" %} &#10060; {% else %} &#10004;&#65039; {% endif %}</div>
+
+            {% elif key == "Personal Harmony and Flexibility" %}
+              <div class="output" style="padding-bottom: 20px;">{{key}}:{% if value == "No" %} &#10060; {% else %} &#10004;&#65039; {% endif %}</div>
+
+            {% elif key == "Discipline" %}
+              <div class="output" style="padding-bottom: 20px;">{{key}}:{% if value == "No" %} &#10004;&#65039; {% else %} &#10060; {% endif %}</div>
+
+            {% elif key == "Concentration" %}
+              <div class="output" style="padding-bottom: 20px;">{{key}}:{% if value == "No" %} &#10004;&#65039; {% else %} &#10060; {% endif %}</div>
+          
+            {% elif key == "Communicativeness" %}
+              <div class="output" style="padding-bottom: 20px;">{{key}}:{% if value == "No" %} &#10004;&#65039; {% else %} &#10060; {% endif %}</div>
+
+            {% endif %}
+
+        {% endfor %}
+      </div>
+    </header>
+
+    <!-- Intro -->
+    <header class="header2">
+        <div id="intro" class="basic-1">
+            <div class="container">
+                <div class="text-container" style="font-family: 'Lucida Handwriting'">
+                    <div class="section-title"><b>ABOUT</b> </div>
+                    <h2>Graphology is a technique for analyzing an individual’s personality based on the given sample of their handwriting. Graphology considers the fact that the movement of our hand is directly related to the state of our brain.</h2>
+                    <p style="font-family: 'Lucida Handwriting'">The proposed methodology extracts <b>SEVEN</b> handwriting features, namely:
+                        <ul>
+                          <li>Top Margin</li>
+                          <li>Pen Pressure</li>
+                          <li>Baseline Angle</li>
+                          <li>Letter Size</li>
+                          <li>Line Spacing</li>
+                          <li>Word Spacing</li>
+                          <li>Slant Angle</li>
+                        </ul>
+                    </p>
+                    <p style="font-family: 'Lucida Handwriting'">The app lists the following <b>EIGHT</b> Personality Traits of a person after analysing their handwriting:
+                        <ul>
+                          <li>Emotional Stability</li>
+                          <li>Mental Energy</li>
+                          <li>Modesty</li>
+                          <li>Peronal Harmony</li>
+                          <li>Lack of Discipline</li>
+                          <li>Poor Concenteration</li>
+                          <li>Non Communicativeness</li>
+                          <li>Social Isolation</li>
+                        </ul>
+                    </p>
+                </div> <!-- end of text-container -->
+            </div> <!-- end of container -->
+        </div> <!-- end of basic-1 -->
+    </header>
+    <!-- end of intro -->
+        
+    <!-- Scripts -->
+    <script>
+        var close = document.getElementsByClassName("closebtn");
+        var i;
+        
+        for (i = 0; i < close.length; i++) {
+          close[i].onclick = function(){
+            var div = this.parentElement;
+            div.style.opacity = "0";
+            setTimeout(function(){ div.style.display = "none"; }, 600);
+          }
+        }
+        </script>
+
+    <script src="{{ url_for('static', filename='js/jquery.min.js')}}"></script> 
+    <script src="{{ url_for('static', filename='js/popper.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js')}}"></script> 
+    <script src="{{ url_for('static', filename='js/jquery.easing.min.js')}}"></script> 
+    <script src="{{ url_for('static', filename='js/swiper.min.js')}}"></script> 
+    <script src="{{ url_for('static', filename='js/jquery.magnific-popup.js')}}"></script> 
+    <script src="{{ url_for('static', filename='js/morphext.min.js')}}"></script> 
+    <script src="{{ url_for('static', filename='js/isotope.pkgd.min.js')}}"></script> 
+    <script src="{{ url_for('static', filename='js/validator.min.js')}}"></script> 
+    <script src="{{ url_for('static', filename='js/scripts.js')}}"></script> 
+
+<!--     <script src="static/js/jquery.min.js"></script> 
+    <script src="static/js/popper.min.js"></script> 
+    <script src="static/js/bootstrap.min.js"></script> 
+    <script src="static/js/jquery.easing.min.js"></script>
+    <script src="static/js/swiper.min.js"></script> 
+    <script src="static/js/jquery.magnific-popup.js"></script> 
+    <script src="static/js/morphext.min.js"></script>
+    <script src="static/js/isotope.pkgd.min.js"></script>
+    <script src="static/js/validator.min.js"></script>
+    <script src="static/js/scripts.js"></script> 
+ -->
+</body>
+</html>
