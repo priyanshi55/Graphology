@@ -1,0 +1,4 @@
+FLASK_SQLAlchemy==2.4.4
+FLASK==1.1.2
+FLASK_RESTful==0.3.8
+gunicorn==19.9.0
